@@ -29,12 +29,18 @@
               <li>
                 <%= link "Sign Out", to: auth_path(@conn, :signout) %>
               </li>
-            <%= else %>
+            <% else %>
               <li>
-               <%= link "Github Sign-in", to: auth_path(@conn, :request, "github") %>
+               <%= link "Github", to: auth_path(@conn, :request, "github") %>
+              </li>
+               <li>
+               <%= link "Facebook", to: auth_path(@conn, :request, "facebook") %>
+               </li>
+                <li>
+               <%= link "Gmail", to: auth_path(@conn, :request, "google") %>
                </li>
 
-            <%= end %>
+            <% end %>
    
           </ul>
         </nav>
