@@ -1,6 +1,6 @@
 <div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+  <h2><%= gettext "Welcome to %{name}!", name: "Machine Leanrning" %></h2>
+  <p class="lead">Machine learning simplified</p>
 </div>
 
 <div class="row marketing">
@@ -8,18 +8,13 @@
     <h4>Resources</h4>
     <ul>
       <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+        <a href="/courses/">Courses</a>
       </li>
     </ul>
   </div>
 
   <div class="col-lg-6">
+    <!--
     <h4>Help</h4>
     <ul>
       <li>
@@ -32,5 +27,6 @@
         <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
       </li>
     </ul>
+  -->
   </div>
 </div>

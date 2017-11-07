@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Learningai!</title>
+    <title>Machine Learning Demystified!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -20,9 +20,10 @@
           </ul> %>
        <%#  </nav> %>
         <nav class="green">
-          <div class="nav-wrapper container">
-          <a href="/" class="brand-logo">Courses</a>
+          <div class="nav-wrapper container"> 
+           <a href="/" class="brand-logo">Home</a>
           </div>
+
           <ul class="nav nav-pills pull-right">
             <%= if @conn.assigns[:user] do %>
               <li>

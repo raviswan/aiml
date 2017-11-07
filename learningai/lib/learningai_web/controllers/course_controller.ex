@@ -9,8 +9,12 @@
   plug :check_course_owner when action in [:update, :edit, :delete]
 
   def index(conn, _params) do
-    IO.inspect(conn.assigns)
     courses = Instructors.list_courses()
+    IO.puts("=============")
+    for course <- courses do
+        IO.puts(course.name)
+    end
+  
     render(conn, "index.html", courses: courses)
   end
 
