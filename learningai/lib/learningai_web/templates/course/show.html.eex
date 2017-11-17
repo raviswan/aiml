@@ -1,3 +1,15 @@
+<div>
+    <h2> <%= @course.name %></h2>
+</div>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @course.name %>
+  </li>
+
+</ul>
 
 <div class="sidenav">
   <a href="#">Chapter 1</a>

@@ -19,7 +19,11 @@ defmodule LearningaiWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/courses", CourseController
+    resources "/courses", CourseController do
+      #resources "/coursecontents", CourseContentController
+      resources "/contents", ContentController
+      resources "/cont", ContsController
+    end
   end
 
   scope "/auth", LearningaiWeb do
@@ -30,6 +34,11 @@ defmodule LearningaiWeb.Router do
      # for return back from github
      get "/:provider/callback", AuthController, :callback
   end
+
+  # scope "/courses/:course_id/", LearningaiWeb do
+  #   pipe_through :browser
+  #   resources "/coursecontents", CourseContentController
+  # end
 
   # Other scopes may use custom stacks.
   # scope "/api", LearningaiWeb do

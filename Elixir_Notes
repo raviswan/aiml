@@ -1,0 +1,447 @@
+ELIXIR NOTES
+=====================
+- Elixir code is transpiled into Erlang before executing on BEAM
+
+- No capitalized variables for anything except module name. You can reassign  a variable to anything
+- elixirc is used to compile .ex and produce beam .Whereas "elixir .exs"  won't produce beam as it
+ is meant for scripting
+
+- String is UTF-8 encoded binary : “this one”
+- keywords : nil, true, false
+ Remember, 
+- Fixing a variable is done as: n =1
+ 								 ^n
+ - iex: shell for elixir
+  	Inside shellm, to get info on any variable 	> i n 
+
+- Char lists are given by  single quotes. ‘thisone’ They are like strings of erlang. Each points to the next element of the list
+
+- Tuples are together in memory, so anything with predetermined size uses size(), e.g. tuple_size()
+
+- IO.puts "the value is #{name}" would print value of name as part of string
+- IO.inspect(): to print the nested values on the console
+
+
+- Linearly increasing structures use length(). E.g. String.length(“hello”), byte_size(“hello”)
+
+- Atoms are called this way: :ok, :ignore
+- Fun is defined is :
+ 		a = fn p -> 2*p end
+		a.(2) returns 4
+- Modules are defined as : 
+	defmodule Name do
+		…
+	end
+- Functions are defined as: 
+	def func do
+		…
+	end
+- Remember functions are called are as ModuleName.FuncName(args)
+
+
+- String concatenation is binary concatenation: <<1,2>> <> <<3,4>>  results in <<1,2,3,4?>>
+	So does: "hello" <> "world" results in "helloworld"
+	- To see a binary representation of a string, do this: "hello" <> <<0>>
+	- <<256::size(16)>> will result in <<1,0>>
+	- <<256>> will result in <<0>>
+	- <<256::utf-8>> will print the character
+	- is_binary(<<1::size(1)>>) returns  false
+	- <<4::size(3)>> returns 4, 
+
+- Binaries: 
+	<<256 :: size(16)>> returns <<1,0>>>
+	<<255>> returns <<0>>
+	<<0, 1, x :: binary>> = <<0, 1, 2, 3>> returns x <<2, 3>>
+
+-KeyLists: when keys are atoms and key can be given more than once
+	[a: 1, b: 2] ++ [c: 3] is same as [{:a,1}, {:b, 2}, {:c,3}]
+
+	In general, when the keyword list is the last argument of a function, the square brackets are optional.
+	Therefore,
+	if(false, [do: :this, else: :that]) is same as 
+	if false, do: :this, else: :that
+
+Maps:
+-----------
+@@@Important:
+One key assosciates with only one value.
+
+- m = %{:a => 1, 3 => "abc"}
+ 	m[:a] returns 1
+ 	m[3] returns "abc"
+
+- updating a map : m = %{m | 3 => :3}
+- When all keys are atoms:
+	map1 = %{a: 1, b: 2}
+	map1.a returns 1
+
+Adding another value to existing map :
+ - Map.Put(m, :c,4)
+
+
+Function Capturing:
+---------------------
+Using '&'' operator. Can be used with named functionns to convert them to anonymous func
+
+	fun = &Module.func/2 to convert a module func into anonymous function.
+	fun.(1,2) 
+
+Alternately,
+	fun = &Module.func(&1,&2) where &1, and &2 stand for first two parameters
+	fun.(1,2)
+
+default value is specified by '\\` operator . 
+	fun(a, b \\ 0) where b has default value of zero
+	
+
+
+Library Functions:
+-----------
+	- Enum.shuffle(deck)
+	- Enum.member?(deck, card) :  usually questions in the member function implies return value is boolean
+	- Enum.split(deck, 2) :  returns a {[first 2 cards], [Rest of deck]}
+	- to call erlang ->   :erlang.binary_to_term(value)
+
+
+Creating a Elixir project (MIX TOOL)
+-----------
+	- mix new cards     -> create a new project called cards 
+	- iex -S mix  (start elixir shell for mix)
+	- mix deps.get  -> Run this when you want to add dependency to the project,but after updating mix.exs deps[]section
+	- mix docs    -> to generate documentation.  (remember: @moduledoc, @doc)
+	- mix test
+
+- Pipe operator : |> 
+	It passes output of one function call into the second function as the latter's first argument.	
+
+
+Keyword Lists:
+-----------------
+- list made of tuples with first element of every tuple is an atom
+
+Eg: l = [{:a, 1}, {:b, 2}, {:a, 3}] can also be written as :
+l = [a:1, b:2, a:3]
+
+
+Structs:
+-----------------
+Just like maps but you can assign default values.
+Think of struct as Erlang record #{}
+Initialization is in separate module that only holds definition of struct starting with keyword "defstruct"
+This typically holds all of data inside an application.
+Syntax for a "sample" struct  with multiple fields
+	defmodule StructExample do
+		defstruct 	 grid: nil, pixel_map: nil, color: nil
+	end
+
+to access it:
+s  = %StructExample{}
+To update the above with color blue, do the following
+%StructExample{s | color: "blue"}
+
+See Identicon example for further syntax
+
+import , alias, use
+-----------------
+You import a module "OldModule" into another module "NewModule". That way all the functions from the imported modules become part of this module
+and be called as NewModule.foo() although foo is defined in OldModule
+
+alias would mean if the function being called is not defined in the current module , look in the other module.
+But it cannnot be called as NewModule.foo(). foo() can only be called inside other functions of the current module.
+
+use: is for deriving functions already defined. A bit like import, but it inherits a varied set of functions
+from various modules and libraries. E.g. use Web.Model, use Web.Controller etc.
+
+---------------------------------------------------------
+--------------------------------------------------------
+					PHOENIX
+--------------------------------------------------------
+--------------------------------------------------------
+
+- mix phx.new <projname>
+- cd <projname>
+- mix ecto.create 
+	(change postgres username and password before running this step. This step is for setting up db for the app.
+	After this you'll find a file under priv/migrations for the db operations)
+- mix phx.server 
+	(the page that gets displayed for localhost:4000 is under web/templates/page/index.html)
+   or iex -S mix phx.server
+- mix phx.gen.html Instructors Course courses name:string  
+	(The above step will generate Instructors context with course model that has a field of type string called "name" )
+   (OLD WAY : - mix ecto.gen.migration add_topics (once you do this, you;ll have  a file under priv/repo/migrations/. define the table here)
+
+- mix ecto.migrate (this will create the table inside the db).
+
+  (OLD WAY: Every time you create a table in db, you gotta let Phoenix know of that table by creating a Model file under webs/models/). Inside Model file, you gotta define schema to match the
+   table you created. And then you gotta define changeset as well. changeset is what turns record or struct into something inserted into db	
+
+- mix phx.routes  : to list all routes available to the app
+
+- To add a new database called users:
+	mix phx.gen.schema User users first_name:string last_name:string email:string provider:string token:string
+	mix ecto.migrate
+
+ - Modify existing database by adding another field to it: 
+	> mix ecto.gen.migration add_user_id_to_courses  (essentially, we are assosciating many courses to one user.User will have many topics assosciated with it, while a topic will have only one user assosciated with it.
+	)
+	  Now add a field in the newly generated priv/.exs file under change() to "alter table". 
+	- Then, on the model side of things, add "has_many" field to User schema and "belongs_to" field in Course schema
+	> mix ecto.migrate
+		
+
+============NESTED ROUTES =========================
+
+Here i want to create new "CourseContent" webpage under each course. They would still all be under 
+the "Instructor" context. But we want the routes to be nested like this:
+/course/1/coursecontent/3
+/course/5/coursecontent/1  etc.
+
+Basic Template generation:
+----------------------
+
+mix phx.gen.html Instructors CourseContent coursecontents  c_id:references:courses objective:text question:text question_nature:string leadership_points:integer is_multiple_choice:boolean num_choices:integer answer_box:text hint:text answer:string explanation:text solution_code:text data_file:string
+
+But when you do nested routes, the helper path returns an error. To overcome this problem, you gotta
+watch the below video, and implement the logic:
+https://www.dailydrip.com/topics/elixir/drips/nested-resources-in-phoenix
+
+NOTE: that in this case you don't have add belong_to and has_many in the schema
+
+
+
+
+===================================================
+- Server side rendering vs Client side rendering
+ ==================================================
+	- Server side rendering means every request is sent to the server and the server renders it. Even a page update would require a call to the server.
+	In client side rendering, initial rendering is done by server and after that, any update is done by JS on the client side
+
+- MVC: Model View Controller : where model represents the data 
+ ===========================================================================
+	View represents the UI part and Controller represents the part that works with Model and View
+	Remember the binary_to_term (model), muffin pan(view) and cook (controller)
+	Refer to lecture 078 of Udemy
+    
+    Purpose of Controller is that it takes model (aka data), a view (aka html), mash them 
+   together and send it back to the user
+
+- Difference between Views and Templates:
+----------------------------------------------
+Whenever a Controller like TopicController calls render() to render, Phoenix assumes we have a view with same name (TopicView) and we need to have a form called new.html because that matches up with function name under the TopicController (udemy-093.mov)
+
+-Remember Phoenix when it starts up, it first looks at the "views" folder , looks at name of the module , grab the name  and looks for the same name folder under templates/ . 
+Therefore,
+-----------------------------------------------------------
+ Name of a view module under views/ ===> similar named folder inside template/
+------------------------------------------------------------
+- It then takes every file inside that templates subfolder (e.g template/page/ for PageController) and add it as function parameter to the PageView render function . e.g index.html under page/ will be called as render("index.html") of PageView module.
+
+In other words, render("index.html") in PageController would mean look for index.html under page/ of template/
+This happens when the phoenix server starts up. render() is not present in PageView
+but if you start phoenix server and goto elixir shell and type
+ > Discuss.PageView.render("index.html"), it will display html contents on the screen
+
+=====================
+DB SETUP
+=====================
+- Migration : purpose is tell db that this is a structure the db should have.
+- Pay particular attn to Plug.Conn struct. This is the incoming http request
+
+- Phoenix Model file under model/ (e.g. topic.ex) is used for the Phoenix to be able to communicate with the database. 
+	- It will, for instance tell Phoenix to look inside of psql to find a table called "topics" with column "title" of type string. That's the purpose of  "schema" call
+
+	- Remember, when we  do "use Discuss.Web, :model" under this module Discuss.Topic, it will create  an empty struct %Discuss.Topic{} . 
+	-------------
+	changeset
+	-------------
+	- Next step is to validate the data that will be going into the db. Remember changeset() call. It returns changeset as well. The first argument to changeset() is a struct that represents the record in the database as created by default in the previous step. 
+
+	The second argument, param is the value that will get stored in the database.  This value is validated in validate_required() based on the field specified. This means that the changeset cannot be valid if that particular field of the structure is empty or nil. If the field is valid, then the changeset() function will generate a changeset datatype by Ecto, to be written to the db. Observe the output changeset datatype in shell.It has a valid field, and afew others.
+
+	When you first insert data into the database, the first argument will be empty struct %Discuss.Topic{}. The second argument is the one that we wanna insert into the database
+
+- changeset gets passed to Repo. Repo module is the handle on the database. It is the one that inserts the data into db.
+
+ - Remember:
+
+ 	Phoenix     | Ecto
+ 	------------------------	
+ 	Controller	| changeset
+ 	Model 		| repo
+ 			    |
+ 	------------------------
+  Repo.get! or Repo.delete! same as one without ! except it returns changeset
+
+ - Any time we change the PSQL database, we got to create a migration file, and run that migration.
+
+
+=====================
+FORM HELPERS and HTML
+======================
+
+Form helpers like below  expect changeset to work with
+  <%= elixir code inside html %>
+
+  <%= form_for @changeset, topic_path(@conn, :create), fn f-> %>
+ 
+  <% end %>
+
+	-The above snippet would execute an elixir function form_for() with 3 params. It says:
+		- Create a form using this changeset. When someone submits the form, send the form to 'create` route related to topic_path.
+
+		 - Inside the fun f,  we'd place submit buttons etc.	f represents the form object
+		'topic_path' is what you see when you run `mix phx.routes`
+
+		- @ before a variable means that Elixir variable is passed in to the template. i.e. To pass custom variables to templates
+
+		- E.g. render(conn, "index.html", courses: courses) 
+		  Here "courses" variable will be passed  from controller into template's "index.html" like below:
+		  <%= for course <- @courses do %>
+
+        - And   when topic_path(@conn, :create) call is made from template, it comes back to the
+          "create" function in the TopicController with "params" argument holding the data entered into the form, which is extracted using pattern matching
+
+	href
+	------
+  - <%= link "Edit", to: topic_path(@conn, :new) %> 
+  	This is to html equivalent of  <a href= equivalent>, where you say go to topic/new controller path when this link "Edit" is clicked on. So, link is replacement for anchor tag <a> and topic_path tells you where to go to
+
+  - <%= link "Delete", to: topic_path(@conn, :delete, topic), method: :delete %>
+  	Similar to above href  <a href= equivalent>, except that link by default is for GET request. But for Delete,
+  	we have to send a "DELETE" message according to REST conventions. Hence, the method: argument at the end.
+
+	edit
+	----
+  - When you need to edit a specific item , we feed in the "id" of the item to be edited.
+  Then what we do is fetch the record from the db using Repo.get(). And  because form helpers work only with
+  changeset, we create a changeset	using the obtained record. This changeset is then passed to the 
+  edit.html. We also pass the original record we fetched because we need the "id" for submitting the form.
+
+	<%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+  In the above,     "text_input f, :title  " informs us to get the :title property of form object f
+  and populate that in the html input form. Refer to 107_udemy for this and REST convention
+
+- TO redirect to a new page, you'd do: redirect(to: topic_path(conn, :index))
+
+===========
+CONN object
+===========
+- conn object coming into the controller is the incoming http request. We inspect the conn object, we do some processing on it, add some response field etc. and pass it on to the next step. `conn` object is passed from one to other unti we are ready to return the response.
+- `params` object is used to parse the url. 
+
+===========
+OAUTH
+===========
+- When you do OAuth, you first send a request to the OAuth provider, like Github. Github recognizes the request is coming from your app based on your url. Once it's verified your app is legitimate (this is done by pre-registering with Github, which  would then provide your app withclient key and client secret. These two are stored as config parameters in your app, and used to identify the app when you redirect a user to Github)
+Once Github verifies the app is legal, it redirects the user back to your app with a user code. This user ode is used what the client aka the Elixir app (spefifically UeberAuth) then uses to communicate with Github to get more info on the user. Refer to the Lecture 93 of Udemy Oauth.
+
+- We use UeberAuth library to do OAuth. 
+- As part of initial settings, you have to store the client key and secret in our elixir project config/config.exs
+- Remember, there's separate route for auth, indicated by scope("/auth"). All the routes under that will be 
+prefixed by /auth. Therefore, to kick off OAuth, you have to set the route as www.mysite.com/auth/github
+
+- And once the user authorizes your app with Github, Github knows what route to generate, which would be
+/auth/github/callback. Goto GitHub -> Developer Settings to look at that.
+
+
+- After you oauth with Github one time, every other request from the same user to Github will be instantly approved.
+
+- "conn.assigns" is importatnt. When you inspect the conn that returns from redirect of GitHub, you'd see that it has a field call "token". That field is needed to do any action on behalf of that user on Github
+
+- Cookies for a given website are automatically sent along with every single request user makes to that domain/web server.  If you visit Google.com, google cookies are received. They are not shared across websites. For eg. yahoo cookies are not sent to google webserver. All cookies are encrypted in Pheonix.
+
+- In our case , after user authenticates using Oauth, we take the token and insert the user info into
+db. The generated "user.id" for the db record is then going to be sent back to the user browser as encrypted cookie. In phoenix, cookie is referred to as "session" . It is eseentially something that identifies the user across multiple requests. Every time user sends subsequent request to our domain  , the cookie is sent along with the request to identify the user logging in to our website. Refer to 122_Udemy flowchart at 02.45 mark.
+
+===============
+PLUGS
+===============
+
+It is a function that does tiny transformation on connection object, "conn". Phoenix is based totally on plugs.
+All controllers are technically plugs. For e.g. render() returns conn object, not html.
+
+Two types of plugs: Function plug vs Module Plug
+
+Example of function plug is the controller example above. Both can be used for any given scenario. If you
+wanna use it many locations, you make Module plug. Else you go with function plug
+
+Module plug must always use 2 function calls: init() and call()	
+
+Check 129_Udemy for how auth plugs are used for restricting access to pages.
+Check 136_Udemy (08:27) for how restful convention restrictions	
+
+We have created 3 plugs so far.
+ 1. SetUser Plug: This Module plug is set in :browser pipeline for every request. This ensures current user is    
+    assigned to the conn object as it traverses through.
+
+ 2. RequireAuth Plug: This Module plug is used to ensure only logged in users can create/delete/edit post ,not 
+   some random guest.
+
+ 3. Check course owner plug: This function plug will serve as additional check so that only the owner who created 
+    the course can edit/delete it.
+
+halt() tells Plug that the connection need not be passed further. So we use that
+
+To use a plug to , put it inside a controller, above all functions like this:
+
+plug LearningaiWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete ]
+
+This informs us that the require_auth plug will run only for the "actions" defined in the list
+
+
+==============
+PSQL COMMANDS
+==============
+
+> psql -U Ram     (to log in)
+> \connect learningai_dev     (to connect to database)
+> \d 						(list all tables)
+> \d courses 				(list schema of a specific table)
+> select * from courses;
+
+
+
+
+=================
+USEFUL DEBUG COMMANDS
+==================
+- mix help
+- rm -rf _build (from project home dir)
+
+==================
+SETTING UP ON AWS/DIGITAL OCEAN
+===================
+
+3  sudo apt-get install build-essential
+4  wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
+sudo apt-get update
+sudo apt-get install esl-erlang
+sudo apt-get install elixir
+sudo apt-get install inotify-tools
+sudo apt-get install nodejs
+sudo apt-get install npm
+apt-get install postgresql postgresql-contrib
+sudo -i -u postgres
+
+Checking PSQL status
+/etc/init.d/postgresql status
+
+git init
+git clone https://github.com/raviswan/aiml
+
+
+
+Replace node with nodejs in config/dev.exs
++  watchers: [nodejs: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
+                     cd: Path.expand("../assets", __DIR__)]]
+
+
+
+
+If it;s Ubuntu, you gotta follow the instructions here to set up your pSQL db
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
+
+If operating from root, make sure the password is set corectly in the config.exs
+Remember, if the db is on the same machine, specify the machine as localhost
+
+

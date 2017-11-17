@@ -6,7 +6,7 @@ defmodule LearningaiWeb.Plugs.SetUser do
   def init(_params) do
   end
 
-  # params below is return value from init function above. Typically some expensive
+  # _params below is return value from init function above. Typically some expensive
   # operation is done inside init. as init is just done once
   def call(conn, _params) do
     user_id = Plug.Conn.get_session(conn, :user_id)

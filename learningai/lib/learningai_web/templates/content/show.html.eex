@@ -1,0 +1,68 @@
+<h2>Show Content</h2>
+
+<ul>
+
+  <li>
+    <strong>Objective:</strong>
+    <%= @content.objective %>
+  </li>
+
+  <li>
+    <strong>Question:</strong>
+    <%= @content.question %>
+  </li>
+
+  <li>
+    <strong>Question nature:</strong>
+    <%= @content.question_nature %>
+  </li>
+
+  <li>
+    <strong>Leadership points:</strong>
+    <%= @content.leadership_points %>
+  </li>
+
+  <li>
+    <strong>Is multiple choice:</strong>
+    <%= @content.is_multiple_choice %>
+  </li>
+
+  <li>
+    <strong>Num choices:</strong>
+    <%= @content.num_choices %>
+  </li>
+
+  <li>
+    <strong>Answer box:</strong>
+    <%= @content.answer_box %>
+  </li>
+
+  <li>
+    <strong>Hint:</strong>
+    <%= @content.hint %>
+  </li>
+
+  <li>
+    <strong>Answer:</strong>
+    <%= @content.answer %>
+  </li>
+
+  <li>
+    <strong>Explanation:</strong>
+    <%= @content.explanation %>
+  </li>
+
+  <li>
+    <strong>Solution code:</strong>
+    <%= @content.solution_code %>
+  </li>
+
+  <li>
+    <strong>Data file:</strong>
+    <%= @content.data_file %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: course_content_path(@conn, :edit, @course, @content) %></span>
+<span><%= link "Back", to: course_content_path(@conn, :index, @course) %></span>

@@ -10,11 +10,6 @@
 
   def index(conn, _params) do
     courses = Instructors.list_courses()
-    IO.puts("=============")
-    for course <- courses do
-        IO.puts(course.name)
-    end
-  
     render(conn, "index.html", courses: courses)
   end
 
