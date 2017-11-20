@@ -20,9 +20,7 @@ defmodule LearningaiWeb.Router do
 
     get "/", PageController, :index
     resources "/courses", CourseController do
-      #resources "/coursecontents", CourseContentController
       resources "/contents", ContentController
-      resources "/cont", ContsController
     end
   end
 

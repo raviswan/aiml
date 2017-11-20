@@ -208,6 +208,30 @@ https://www.dailydrip.com/topics/elixir/drips/nested-resources-in-phoenix
 NOTE: that in this case you don't have add belong_to and has_many in the schema
 
 
+=================DATA NESTING IN DATABASE ========================
+
+basically, whenever you need to access the data of one schema, from another
+so rather than having to load two different schemas from the database, you can do it all at once with a preload
+They basically make it easier to understand
+that's router nesting . There's also nesting of data within ecto requests . Router nesting is complete independent of nesting of data within the database. If you want to nest data within the database, you need associations . The router is only concerned with what the URLS will be
+
+so let's say content is like this 
+```    belongs_to :course, Item.Course ```
+
+and course is like this
+```    has_many :content, Item.Content```
+
+then in content, you could do this
+```  def get_course_assoc!(id), do: Repo.get!(Course, id) |> Repo.preload([:content]) ```
+
+
+so in the json, it would be like this
+```content: {
+    course: [{}, {}, {}] 
+    }
+```
+ 
+so you use preload to get nested associations. but in order to do that, you must use belongs_to, has_many etc.
 
 
 ===================================================

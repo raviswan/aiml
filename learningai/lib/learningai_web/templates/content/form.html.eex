@@ -6,6 +6,12 @@
   <% end %>
 
   <div class="form-group">
+    <%= label f, :title, class: "control-label" %>
+    <%= text_input f, :title, class: "form-control" %>
+    <%= error_tag f, :title %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :objective, class: "control-label" %>
     <%= textarea f, :objective, class: "form-control" %>
     <%= error_tag f, :objective %>
@@ -36,17 +42,25 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :num_choices, class: "control-label" %>
-    <%= number_input f, :num_choices, class: "form-control" %>
-    <%= error_tag f, :num_choices %>
+    <%= label f, :choice1, class: "control-label" %>
+    <%= text_input f, :choice1, class: "form-control" %>
+    <%= error_tag f, :choice1 %>
   </div>
-
-  <div class="form-group">
-    <%= label f, :answer_box, class: "control-label" %>
-    <%= textarea f, :answer_box, class: "form-control" %>
-    <%= error_tag f, :answer_box %>
+   <div class="form-group">
+    <%= label f, :choice2, class: "control-label" %>
+    <%= text_input f, :choice2, class: "form-control" %>
+    <%= error_tag f, :choice2 %>
   </div>
-
+   <div class="form-group">
+    <%= label f, :choice3, class: "control-label" %>
+    <%= text_input f, :choice3, class: "form-control" %>
+    <%= error_tag f, :choice3 %>
+  </div>
+   <div class="form-group">
+    <%= label f, :choice4, class: "control-label" %>
+    <%= text_input f, :choice4, class: "form-control" %>
+    <%= error_tag f, :choice4 %>
+  </div>
   <div class="form-group">
     <%= label f, :hint, class: "control-label" %>
     <%= textarea f, :hint, class: "form-control" %>

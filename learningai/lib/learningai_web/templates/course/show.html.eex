@@ -1,40 +1,7 @@
-<div>
-    <h2> <%= @course.name %></h2>
-</div>
 
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @course.name %>
-  </li>
-
-</ul>
-
-<div class="sidenav">
-  <a href="#">Chapter 1</a>
-  <a href="#">Chapter 2</a>
-  <a href="#">Chapter 3</a>
-</div>
-
-
-
-
-<div class="content">
-   <div class="page title">
-    <h2> <%= @course.name %></h2>
-   </div>
-  <h3>Introduction</h2>
-  <p> Intro goes here</p>
-  <div>
-    <h4><strong>Problem Statement</strong></h4>
-    <p> Problemm statement here </p>
-  </div>
-  <div>
-    <p>Explanation here</p>
-  </div>
-</div>
-</div>
-
+<span><%= link "New Content", to: course_content_path(@conn, :new, @course) %></span>
+<br/>
+<br/>
+<br/>
 <span><%= link "Edit", to: course_path(@conn, :edit, @course) %> </span>
- <span><%= link "Back", to: course_path(@conn, :index) %> </span>
+<span><%= link "Back", to: course_path(@conn, :index) %> </span>

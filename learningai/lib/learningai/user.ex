@@ -21,5 +21,6 @@ defmodule Learningai.User do
     user
     |> cast(attrs, [:first_name, :last_name, :email, :provider, :token])
     |> validate_required([:email, :provider, :token])
+    |> unique_constraint(:email)
   end
 end

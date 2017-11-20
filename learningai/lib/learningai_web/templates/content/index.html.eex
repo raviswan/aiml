@@ -1,48 +1,12 @@
-<h2>Listing Contents</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Objective</th>
-      <th>Question</th>
-      <th>Question nature</th>
-      <th>Leadership points</th>
-      <th>Is multiple choice</th>
-      <th>Num choices</th>
-      <th>Answer box</th>
-      <th>Hint</th>
-      <th>Answer</th>
-      <th>Explanation</th>
-      <th>Solution code</th>
-      <th>Data file</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for content <- @contents do %>
-    <tr>
-      <td><%= content.objective %></td>
-      <td><%= content.question %></td>
-      <td><%= content.question_nature %></td>
-      <td><%= content.leadership_points %></td>
-      <td><%= content.is_multiple_choice %></td>
-      <td><%= content.num_choices %></td>
-      <td><%= content.answer_box %></td>
-      <td><%= content.hint %></td>
-      <td><%= content.answer %></td>
-      <td><%= content.explanation %></td>
-      <td><%= content.solution_code %></td>
-      <td><%= content.data_file %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: course_content_path(@conn, :show, @course, content), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: course_content_path(@conn, :edit, @course, content), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: course_content_path(@conn, :delete, @course, content), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
+<div class="sidenav">
+    <h3><%= @course.name %></h3>
+    <%= for content <- @contents do %>
+    <a><%= link content.title, to: course_content_path(@conn, :show, @course, content) %> </a>
+    <% end %>
+</div>
+<div class="content">
+</div>
 <span><%= link "New Content", to: course_content_path(@conn, :new, @course) %></span>
+
+

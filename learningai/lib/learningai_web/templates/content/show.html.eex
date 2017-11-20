@@ -1,68 +1,59 @@
-<h2>Show Content</h2>
-
-<ul>
-
-  <li>
-    <strong>Objective:</strong>
-    <%= @content.objective %>
-  </li>
-
-  <li>
-    <strong>Question:</strong>
-    <%= @content.question %>
-  </li>
-
-  <li>
-    <strong>Question nature:</strong>
-    <%= @content.question_nature %>
-  </li>
-
-  <li>
-    <strong>Leadership points:</strong>
-    <%= @content.leadership_points %>
-  </li>
-
-  <li>
-    <strong>Is multiple choice:</strong>
-    <%= @content.is_multiple_choice %>
-  </li>
-
-  <li>
-    <strong>Num choices:</strong>
-    <%= @content.num_choices %>
-  </li>
-
-  <li>
-    <strong>Answer box:</strong>
-    <%= @content.answer_box %>
-  </li>
-
-  <li>
-    <strong>Hint:</strong>
-    <%= @content.hint %>
-  </li>
-
-  <li>
-    <strong>Answer:</strong>
-    <%= @content.answer %>
-  </li>
-
-  <li>
-    <strong>Explanation:</strong>
-    <%= @content.explanation %>
-  </li>
-
-  <li>
-    <strong>Solution code:</strong>
-    <%= @content.solution_code %>
-  </li>
-
-  <li>
-    <strong>Data file:</strong>
-    <%= @content.data_file %>
-  </li>
-
-</ul>
+<h2> <%= @content.title %></h2>
+<div class="coursecontent">
+  <strong>Objective</strong>
+  <p><%= @content.objective %></p>
+</div>
+<div class="coursecontent">
+  <strong>Question</strong>
+  <p><%= @content.question %></p>
+  <ol type="a">
+  <%= if @content.is_multiple_choice == true do %>
+    <%= if @content.choice1 != nil do %>
+      <li><%=  @content.choice1 %> </li>  
+    <% end %>
+     <%= if @content.choice2 != nil do %>
+       <li><%=  @content.choice3 %> </li> 
+    <% end %>
+     <%= if @content.choice3 != nil do %>
+       <li><%=  @content.choice3 %> </li> 
+    <% end %>
+    <%= if @content.choice4 != nil do %>
+       <li><%=  @content.choice4 %> </li> 
+    <% end %>
+  <% end %>
+  </ol>
+</div>
+<div class="coursecontent">
+  <strong>Hint:</strong>
+  <p><%= @content.hint %></p>
+</div>
+<div class="coursecontent">
+  <strong>Nature of question</strong>
+  <p><%= @content.question_nature %></p>
+</div>
+<div class="coursecontent">
+  <strong>Leadership Points</strong>
+  <p><%= @content.leadership_points %></p>
+</div>
+<div class="coursecontent">
+  <strong>Answer</strong>
+  <p><%= @content.answer %></p>
+</div>
+<div class="coursecontent">
+  <strong>Accompanying Code</strong>
+  <p><%= @content.solution_code %></p>
+</div>
+<div class="coursecontent">
+  <strong>Data File</strong>
+  <p><%= @content.data_file %></p>
+</div>
+<div class="coursecontent">
+  <strong>Explanation</strong>
+  <p><%= @content.explanation %></p>
+  <br/>
+  <br/>
+</div>
 
 <span><%= link "Edit", to: course_content_path(@conn, :edit, @course, @content) %></span>
 <span><%= link "Back", to: course_content_path(@conn, :index, @course) %></span>
+ <span><%= link "Delete", to: course_content_path(@conn, :delete, @course, @  content), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
