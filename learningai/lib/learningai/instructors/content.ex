@@ -7,6 +7,7 @@ defmodule Learningai.Instructors.Content do
   schema "contents" do
     field :answer, :string
     field :data_file, :string
+    field :data_file_name, :string, default: nil
     field :explanation, :string
     field :hint, :string
     field :is_multiple_choice, :boolean, default: false
@@ -21,14 +22,22 @@ defmodule Learningai.Instructors.Content do
     field :choice2, :string, default: nil
     field :choice3, :string, default: nil
     field :choice4, :string, default: nil
+    field :is_choice1_correct, :boolean, default: false
+    field :is_choice2_correct, :boolean, default: false
+    field :is_choice3_correct, :boolean, default: false
+    field :is_choice4_correct, :boolean, default: false
+    field :answer_box, :string, default: nil
+    field :use_existing_file, :boolean, default: true
     timestamps()
   end
 
   @doc false
   def changeset(%Content{} = content, attrs) do
     content
-    |> cast(attrs, [:objective, :question, :question_nature, :leadership_points, :is_multiple_choice, :hint, :answer, :explanation, :solution_code, :data_file, :c_id, :title, :choice1, :choice2, :choice3, :choice4])
+    |> cast(attrs, [:objective, :question, :question_nature, :leadership_points, :is_multiple_choice, :hint,
+     :answer, :explanation, :solution_code, :data_file, :c_id, :title, :choice1, :choice2, :choice3, :choice4,
+     :is_choice1_correct, :is_choice2_correct, :is_choice3_correct, :is_choice4_correct, :answer_box, :use_existing_file, :data_file_name])
     |> foreign_key_constraint(:c_id)
-    |> validate_required([:objective, :question, :question_nature, :leadership_points, :is_multiple_choice, :hint, :answer, :explanation, :solution_code, :data_file, :c_id, :title])
+    |> validate_required([:objective, :question, :question_nature, :leadership_points, :c_id, :title])
   end
 end

@@ -33,6 +33,22 @@ defmodule LearningaiWeb.ContentController do
     content_params
     |> Map.put("c_id", course.id)
 
+    content_params = 
+    case content_params["use_existing_file"] do
+      "false" ->
+        if datafile = content_params["data_file"] do
+          #extension = Path.extname(datafile.filename)
+          File.cp(datafile.path, "/Users/Ram/Downloads/learningai/#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
+          content_params
+          |> Map.put("data_file", "#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
+          |> Map.put("data_file_name", datafile.filename)
+        else
+          content_params
+        end
+      "true" ->
+        content_params
+    end
+    
     case Instructors.create_content(content_params) do
       {:ok, content} ->
         conn
@@ -56,6 +72,22 @@ defmodule LearningaiWeb.ContentController do
 
   def update(conn, %{"id" => id, "content" => content_params}, course) do
     content = Instructors.get_content!(course, id)
+
+    content_params = 
+    case content_params["use_existing_file"] do
+      "false" ->
+        if datafile = content_params["data_file"] do
+          #extension = Path.extname(datafile.filename)
+          File.cp(datafile.path, "/Users/Ram/Downloads/learningai/#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
+          content_params
+          |> Map.put("data_file", "#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
+          |> Map.put("data_file_name", datafile.filename)
+        else
+          content_params
+        end
+      "true" ->
+        content_params
+    end
 
     case Instructors.update_content(content, content_params) do
       {:ok, content} ->

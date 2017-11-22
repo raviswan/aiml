@@ -1,4 +1,4 @@
-<%= form_for @changeset, @action, fn f -> %>
+<%= form_for @changeset, @action, [multipart: true], fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -42,25 +42,30 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :choice1, class: "control-label" %>
+    <%= label f, :choice1 , class: "control-label" %>
+    <%= checkbox f, :is_choice1_correct, class: "checkbox"%>
     <%= text_input f, :choice1, class: "form-control" %>
     <%= error_tag f, :choice1 %>
   </div>
    <div class="form-group">
     <%= label f, :choice2, class: "control-label" %>
+    <%= checkbox f, :is_choice2_correct, class: "checkbox"%>
     <%= text_input f, :choice2, class: "form-control" %>
     <%= error_tag f, :choice2 %>
   </div>
    <div class="form-group">
     <%= label f, :choice3, class: "control-label" %>
+    <%= checkbox f, :is_choice3_correct, class: "checkbox"%>
     <%= text_input f, :choice3, class: "form-control" %>
     <%= error_tag f, :choice3 %>
   </div>
    <div class="form-group">
     <%= label f, :choice4, class: "control-label" %>
+    <%= checkbox f, :is_choice4_correct, class: "checkbox"%>
     <%= text_input f, :choice4, class: "form-control" %>
     <%= error_tag f, :choice4 %>
   </div>
+
   <div class="form-group">
     <%= label f, :hint, class: "control-label" %>
     <%= textarea f, :hint, class: "form-control" %>
@@ -86,12 +91,20 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :data_file, class: "control-label" %>
-    <%= text_input f, :data_file, class: "form-control" %>
+    <label>Data File</label>
+    <br/>
+    <%= radio_button f, :use_existing_file, "true", checked: "checked" %>
+    <%= label f, "Use Existing File", class: "control-label" %>
+    <br/>
+    <%= radio_button f, :use_existing_file, "false" %>
+    <%= label f, "New File", class: "control-label" %>
+    
+    <%= file_input f, :data_file %>
     <%= error_tag f, :data_file %>
   </div>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
+
 <% end %>

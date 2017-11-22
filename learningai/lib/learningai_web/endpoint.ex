@@ -11,6 +11,11 @@ defmodule LearningaiWeb.Endpoint do
     at: "/", from: :learningai, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
+  # added to store data files uploaded by instructor
+  plug Plug.Static, 
+  at: "/data_files", from: "/Users/Ram/Downloads/learningai", gzip: false
+
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
