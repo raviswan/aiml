@@ -1,5 +1,6 @@
 defmodule Learningai.Instructors.Content do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
   alias Learningai.Instructors.Content
 
@@ -28,6 +29,7 @@ defmodule Learningai.Instructors.Content do
     field :is_choice4_correct, :boolean, default: false
     field :answer_box, :string, default: nil
     field :use_existing_file, :boolean, default: true
+    field :explanation_image_file, Learningai.ImageUploader.Type
     timestamps()
   end
 
@@ -36,7 +38,9 @@ defmodule Learningai.Instructors.Content do
     content
     |> cast(attrs, [:objective, :question, :question_nature, :leadership_points, :is_multiple_choice, :hint,
      :answer, :explanation, :solution_code, :data_file, :c_id, :title, :choice1, :choice2, :choice3, :choice4,
-     :is_choice1_correct, :is_choice2_correct, :is_choice3_correct, :is_choice4_correct, :answer_box, :use_existing_file, :data_file_name])
+     :is_choice1_correct, :is_choice2_correct, :is_choice3_correct, :is_choice4_correct, :answer_box, :use_existing_file, :data_file_name,
+     :explanation_image_file])
+    |> cast_attachments(attrs, [:explanation_image_file])
     |> foreign_key_constraint(:c_id)
     |> validate_required([:objective, :question, :question_nature, :leadership_points, :c_id, :title])
   end

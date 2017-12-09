@@ -15,6 +15,9 @@ defmodule LearningaiWeb.Endpoint do
   plug Plug.Static, 
   at: "/data_files", from: "/Users/Ram/Downloads/learningai", gzip: false
 
+  # added new endpoint for displaying images from Arc
+  plug Plug.Static,
+    at: "/uploads", from: Path.expand("./uploads"), gzip: false
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

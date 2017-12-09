@@ -1,10 +1,11 @@
 defmodule LearningaiWeb.ContentController do
   use LearningaiWeb, :controller
-
   alias Learningai.Instructors
   alias Learningai.Instructors.Content
   alias Learningai.Instructors.Course
   alias Learningai.Repo
+  alias Learningai.ImageUploader
+  use Arc.Ecto.Schema
 
   plug LearningaiWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete ]
   plug :check_course_owner when action in [:update, :edit, :delete]
@@ -33,21 +34,8 @@ defmodule LearningaiWeb.ContentController do
     content_params
     |> Map.put("c_id", course.id)
 
-    content_params = 
-    case content_params["use_existing_file"] do
-      "false" ->
-        if datafile = content_params["data_file"] do
-          #extension = Path.extname(datafile.filename)
-          File.cp(datafile.path, "/Users/Ram/Downloads/learningai/#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
-          content_params
-          |> Map.put("data_file", "#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
-          |> Map.put("data_file_name", datafile.filename)
-        else
-          content_params
-        end
-      "true" ->
-        content_params
-    end
+    content_params = check_data_file(conn, content_params, course)
+    content_params = get_image_details(conn, content_params, course)
     
     case Instructors.create_content(content_params) do
       {:ok, content} ->
@@ -108,6 +96,35 @@ defmodule LearningaiWeb.ContentController do
     |> redirect(to: course_content_path(conn, :index, course))
   end
 
+  defp check_data_file(conn, content_params, course) do
+    case content_params["use_existing_file"] do
+      "false" ->
+        if datafile = content_params["data_file"] do
+          #extension = Path.extname(datafile.filename)
+          File.cp(datafile.path, "/Users/Ram/Downloads/learningai/#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
+          content_params
+          |> Map.put("data_file", "#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-#{datafile.filename}")
+          |> Map.put("data_file_name", datafile.filename)
+        else
+          content_params
+        end
+      "true" ->
+        content_params
+    end
+  end
+
+  defp  get_image_details(_conn, content_params, _course) do
+    if image_params = content_params["explanation_image_file"] do
+      #store_path = "/Users/Ram/Downloads/learningai/images/#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-"
+      #File.cp(image_params.path, "#{store_path}-#{image_params.filename}")
+      #file_path = "/Users/Ram/Downloads/learningai/images/#{course.name}-#{content_params["title"]}-user-#{conn.assigns.user.id}-"
+      ImageUploader.store({image_params, content_params})
+      content_params
+      |> Map.put("explanation_image_file", image_params.filename)
+    else
+      content_params
+    end
+  end
 
   def check_course_owner(conn, _plugparams) do
     #This :params is courtesy "resource" controller helper. It pulls "id" out of the url and attach it to connect   

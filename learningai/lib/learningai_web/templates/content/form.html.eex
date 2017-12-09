@@ -85,6 +85,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, "Explanation image", class: "control-label" %>
+    <%= file_input f, :explanation_image_file %>
+    <%= error_tag f, :explanation_image_file %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :solution_code, class: "control-label" %>
     <%= textarea f, :solution_code, class: "form-control" %>
     <%= error_tag f, :solution_code %>

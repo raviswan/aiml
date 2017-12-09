@@ -43,4 +43,7 @@ config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
   client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
+config :arc,
+  storage: Arc.Storage.Local
+
 import_config "#{Mix.env}.exs"

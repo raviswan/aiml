@@ -21,7 +21,7 @@ defmodule Learningai.Mixfile do
     [
       mod: {Learningai.Application, []},
       extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_github,
-                           :ueberauth_google, :ueberauth_facebook]
+                           :ueberauth_google, :ueberauth_facebook, :arc_ecto]
     ]
   end
 
@@ -45,7 +45,9 @@ defmodule Learningai.Mixfile do
       {:ueberauth, "~> 0.3"},
       {:ueberauth_github, "~> 0.4"},
       {:ueberauth_google, "~> 0.5"},
-      {:ueberauth_facebook, "~> 0.7"}
+      {:ueberauth_facebook, "~> 0.7"},
+      {:arc, "~> 0.8.0"},
+      {:arc_ecto, "~> 0.7.0"}
     ]
   end
 

@@ -76,10 +76,13 @@
 </div>
 <% end %>
 
+ <%= if @content.is_multiple_choice != true and @content.answer != nil do %>
 <div class="coursecontent">
     <strong>Answer</strong>
     <p><%= @content.answer %></p>
 </div>
+<% end %>
+
 
 <div class="coursecontent">
   <strong>Data File</strong>
@@ -92,6 +95,7 @@
       <p><%= @content.explanation %></p>
 </div>
 <% end %>
+<img src="<%= Learningai.ImageUploader.url({@content.explanation_image_file, @content})%>">
 <br/>
 <br/>
 
