@@ -19,6 +19,9 @@
      });
     </script>
     <script type="text/javascript" src="<%= static_path(@conn, "/js/MathJax-2.7.2/MathJax.js") %>"></script>
+    <!-- Latest Sortable for drag and drop menu-->
+    <!--script src="//rubaxa.github.io/Sortable/Sortable.js"></script> -->
+
   </head>
 
   <body>

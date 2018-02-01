@@ -1,5 +1,5 @@
 
-<div class="sidenav">
+<div class="sidenav" class="list-group">
     <h3><%= @course.name %></h3>
     <%= for content <- @contents do %>
     <a><%= link content.title, to: course_content_path(@conn, :show, @course, content) %> </a>
